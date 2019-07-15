@@ -108,17 +108,87 @@ class App():
         simulation["status_hujan"] = self.statusHujan
         
         return simulation
+
+    def averageCurahHujan(self):
+        count = 0
+        for x in range(len(self.curahHujanSimulation)-1):
+            count = count + self.curahHujanSimulation[x]
+        
+        result = count / (len(self.curahHujanSimulation)-1) 
+        return round(result,3)
+    
+    def averageLamaHujan(self):
+        count = 0
+        for x in range(len(self.lamaHujanSimulation)-1):
+            count = count + self.lamaHujanSimulation[x]
+        
+        result = count / (len(self.lamaHujanSimulation)-1) 
+        return result
+    
+    def averageIntensitasCurahHujan(self):
+        count = 0
+        for x in range(len(self.intensitasCurahHujan)-1):
+            count = count + self.intensitasCurahHujan[x]
+        
+        result = count / (len(self.intensitasCurahHujan)-1) 
+        return result
+    
+    def maxCurahHujan(self):
+        max = 0
+        for x in range(len(self.curahHujanSimulation)):
+            if (max<self.curahHujanSimulation[x]):
+                max = self.curahHujanSimulation[x]
+        return max
+    
+    def minCurahHujan(self):
+        min = self.curahHujanSimulation[0]
+        for x in range(len(self.curahHujanSimulation)):
+            if (min>self.curahHujanSimulation[x]):
+                min = self.curahHujanSimulation[x]
+        return min
+    
+    def maxLamaHujan(self):
+        max = 0
+        for x in range(len(self.lamaHujanSimulation)):
+            if (max<self.lamaHujanSimulation[x]):
+                max = self.lamaHujanSimulation[x]
+        return max
+    
+    def minLamaHujan(self):
+        min = self.lamaHujanSimulation[0]
+        for x in range(len(self.lamaHujanSimulation)):
+            if (min>self.lamaHujanSimulation[x]):
+                min = self.lamaHujanSimulation[x]
+        return min
+
+    def maxIntensitasCurahHujan(self):
+        max = self.intensitasCurahHujan[0]
+        for x in range(len(self.intensitasCurahHujan)):
+            if (max<self.intensitasCurahHujan[x]):
+                max = self.intensitasCurahHujan[x]
+    
+        return max
+    
+    def minIntensitasCurahHujan(self):
+        min = self.intensitasCurahHujan[0]
+        for x in range(len(self.intensitasCurahHujan)):
+            if (min>self.intensitasCurahHujan[x]):
+                min = self.intensitasCurahHujan[x]
+    
+        return min
     
     def showTableSimulation(self):
         simulation = self.createSimulation()
         x = PrettyTable()
         x.field_names = [
+                "Simulasi Tahun ke -",
                 "Curah Hujan", "Lama Hujan", "Curah Hujan (mm)", "Lama Hujan (bulan)",
                 "Intensitas Curah Hujan (mm/hujan)","Status Hujan"
                         ]
             
         for j in range(self.n):
             x.add_row([
+                j+1,
                 simulation["curah_hujan"][j], 
                 simulation["lama_hujan"][j], 
                 simulation["curah_hujan_simulation"][j], 
@@ -128,10 +198,41 @@ class App():
                 ])
                      
         print(x)
+
+        print("HASIL ANALISIS")
+        
+        print("Rata rata Curah Hujan : ", self.averageCurahHujan())
+        print("Rata-rata Lama Hujan  : ", self.averageLamaHujan())
+        print("Rata-rata Intensitas Curah Hujan : ",self.averageIntensitasCurahHujan())
+        print("Curah Hujan Tertinggi : ",self.maxCurahHujan())
+        print("Lama Hujan Terlama : ",self.maxLamaHujan())
+        print("Intensitas Curah Hujan Tertinggi : ",self.maxIntensitasCurahHujan())
+        print("Curah Hujan Terendah : ",self.minCurahHujan())
+        print("Lama Hujan Tersingkat : ",self.minLamaHujan())
+        print("Intensitas Curah Hujan Terendah : ",self.minIntensitasCurahHujan())
+        
+       
+    def showGraph(self):
+        curahHujanNumbers = self.curahHujan
+        category = curahHujanNumbers["category"]
+        arr = []
+        for x in range(len(self.intensitasCurahHujan)):
+            arr.append([x])
+
+        plt.xlabel('Tahun')
+        plt.ylabel('Intensitas Curah Hujan')
+        plt.title('Intensitas Curah Hujan Tahunan Bandung')     
+        plt.grid(True)  
+        plt.plot(arr,self.intensitasCurahHujan,'k', color='black')
+
+        inputKey = input("Show Graph ? (y/n)")
+        if (inputKey == "y"):
+            plt.show()
            
 
 app = App()
 app.setRandomNumberGenerator(221,23,1201,10116347,10)
 app.setApp()
 app.showTableSimulation()
+app.showGraph()
 
