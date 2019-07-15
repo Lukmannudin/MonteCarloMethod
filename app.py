@@ -1,6 +1,8 @@
 from lib.RandomNumberGenerator import RandomNumberGenerator
 from lib.CurahHujan import CurahHujan
 from lib.LamaHujan import LamaHujan
+from prettytable import PrettyTable
+import matplotlib.pyplot as plt
 
 class App():
     def __init__(self):
@@ -15,7 +17,9 @@ class App():
         self.lamaHujan = LamaHujan().getLamaHujan()
         self.curahHujanSimulation = None
         self.lamaHujanSimulation = None
-        self.intensitasLamaHujan = None
+        self.intensitasCurahHujan = None
+        self.statusHujan = None
+        self.simulation = {}
 
     def setRandomNumberGenerator(self,a, c, m, z0, n):
         self.a = a
@@ -40,11 +44,11 @@ class App():
         category = curahHujanNumbers["category"]
         randomNumberInterval = curahHujanNumbers["random_number_interval"]
      
-        for x in range(self.n):
+        for x in range(self.n+1):
             for y in range(len(randomNumberInterval)):
                 if (lcgNumbers[x]>=randomNumberInterval[y][0] and lcgNumbers[x]<=randomNumberInterval[y][1]) :
                     result.append(category[y])
-        
+                   
 
         self.curahHujanSimulation = result
     
@@ -56,7 +60,7 @@ class App():
         category = lamaHujanNumbers["category"]
         randomNumberInterval = lamaHujanNumbers["random_number_interval"]
      
-        for x in range(self.n):
+        for x in range(self.n+1):
             for y in range(len(randomNumberInterval)):
                 if (multiplicativeNumbers[x]>=randomNumberInterval[y][0] and multiplicativeNumbers[x]<=randomNumberInterval[y][1]) :
                     result.append(category[y])
@@ -68,33 +72,66 @@ class App():
         for x in range(len(self.curahHujanSimulation)):
             result.append(self.curahHujanSimulation[x] / self.lamaHujanSimulation[x])
         
-        self.intensitasLamaHujan = result
+        self.intensitasCurahHujan = result
     
     def setStatusHujan(self):
         result = []
         
-        for x in range(len(self.intensitasLamaHujan)):
-            if (self.intensitasLamaHujan[x] < 100) :
+        for x in range(len(self.intensitasCurahHujan)):
+            if (self.intensitasCurahHujan[x] < 100) :
                 result.append("Hujan Ringan")
-            elif (self.intensitasLamaHujan[x]>=100 and self.intensitasLamaHujan[x]<300):
+            elif (self.intensitasCurahHujan[x]>=100 and self.intensitasCurahHujan[x]<300):
                 result.append("Hujan Sedang")
-            elif (self.intensitasLamaHujan[x]>=300 and self.intensitasLamaHujan[x]<500):
+            elif (self.intensitasCurahHujan[x]>=300 and self.intensitasCurahHujan[x]<500):
                 result.append("Hujan Lebat")
-            elif (self.intensitasLamaHujan[x]>=500):
+            elif (self.intensitasCurahHujan[x]>=500):
                 result.append("Hujan Sangat Lebat")
         
-        return result
+        self.statusHujan = result
 
         
-    def generateTable(self):
+    def setApp(self):
        self.setLCG()
        self.setMultiplicative()
        self.setCurahHujanSimulation()
        self.setLamaHujanSimulation()
        self.setIntensitasCurahHujan()
        self.setStatusHujan()
-
+    
+    def createSimulation(self):
+        simulation = {}
+        simulation["curah_hujan"] = self.lcgUniform
+        simulation["lama_hujan"] = self.multiplicativeUniform
+        simulation["curah_hujan_simulation"] = self.curahHujanSimulation
+        simulation["lama_hujan_simulation"] = self.lamaHujanSimulation
+        simulation["intensitas_curah_hujan"] = self.intensitasCurahHujan
+        simulation["status_hujan"] = self.statusHujan
+        
+        return simulation
+    
+    def showTableSimulation(self):
+        simulation = self.createSimulation()
+        x = PrettyTable()
+        x.field_names = [
+                "Curah Hujan", "Lama Hujan", "Curah Hujan (mm)", "Lama Hujan (bulan)",
+                "Intensitas Curah Hujan (mm/hujan)","Status Hujan"
+                        ]
+            
+        for j in range(self.n):
+            x.add_row([
+                simulation["curah_hujan"][j], 
+                simulation["lama_hujan"][j], 
+                simulation["curah_hujan_simulation"][j], 
+                simulation["lama_hujan_simulation"][j], 
+                simulation["intensitas_curah_hujan"][j], 
+                simulation["status_hujan"][j]
+                ])
+                     
+        print(x)
+           
 
 app = App()
-app.setRandomNumberGenerator(221,23,1201,10116347,5)
-app.generateTable()
+app.setRandomNumberGenerator(221,23,1201,10116347,10)
+app.setApp()
+app.showTableSimulation()
+
