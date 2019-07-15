@@ -1,9 +1,9 @@
 import pandas as pd
 
-class CurahHujan:
+class LamaHujan:
     def __init__(self):
-        self.datacurahhujan = pd.read_csv("datacurahhujantahunan.csv")
-        self.dataset = self.datacurahhujan.iloc[:,:-1].values
+        self.datacurahhujan = pd.read_csv("datalamahujantahunan.csv")
+        self.dataset = self.datacurahhujan.iloc[:,:].values
         self.numberDecimal = 3
         self.startRandom = 0.001
         self.category = None
@@ -14,7 +14,7 @@ class CurahHujan:
         self.randomNumberInterval = []
     
     def setCategory(self):
-        self.category = [1300,1700,2500,2800,3000]
+        self.category = [1,2,3,4,5,6,7,8,9,10,11,12]
     
     def setFrequencyAndsetN(self):
         f1 = 0
@@ -22,24 +22,47 @@ class CurahHujan:
         f3 = 0
         f4 = 0
         f5 = 0
+        f6 = 0
+        f7 = 0
+        f8 = 0
+        f9 = 0
+        f10 = 0
+        f11 = 0
+        f12 = 0
+
         current = 0
     
         for x in range(len(self.dataset)):
             for y in range(len(self.dataset[x])):
                 current = self.dataset[x][y]
-                if current == 1300:
+                if current == 1:
                     f1 = f1 +1
-                elif current == 1700:
+                elif current == 2:
                     f2 = f2 +1
-                elif current == 2500:
+                elif current == 3:
                     f3 = f3 +1
-                elif current == 2800:
+                elif current == 4:
                     f4 = f4 +1
-                elif current == 3000:
+                elif current == 5:
                     f5 = f5 +1
+                elif current == 6:
+                    f6 = f6 +1
+                elif current == 7:
+                    f7 = f7 +1
+                elif current == 8:
+                    f8 = f8 +1
+                elif current == 9:
+                    f9 = f9 +1
+                elif current == 10:
+                    f10 = f10 +1
+                elif current == 11:
+                    f11 = f11 +1
+                elif current == 12:
+                    f12 = f12 +1
         
-        self.n = f1+f2+f3+f4+f5
-        self.frequency = [f1,f2,f3,f4,f5]
+
+        self.n = f1+f2+f3+f4+f5+f6+f7+f8+f9+f10+f11+f12
+        self.frequency = [f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12]
 
     def getN(self):
         return self.n
@@ -72,7 +95,7 @@ class CurahHujan:
             tb = self.cumulativeProbability[x] + self.startRandom
             self.randomNumberInterval.append(interval)
 
-    def getCurahHujan(self):
+    def getLamaHujan(self):
         self.setCategory()
         self.setFrequencyAndsetN()
         self.setProbability()
@@ -85,9 +108,8 @@ class CurahHujan:
         table["probability"] = self.probability
         table["cumulative_probability"] = self.cumulativeProbability
         table["random_number_interval"] = self.randomNumberInterval
+
         return table
    
-    def getDataCurahHujan(self):
+    def getDataLamaHujan(self):
         return self.dataset
-
-

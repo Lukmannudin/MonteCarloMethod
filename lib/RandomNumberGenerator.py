@@ -68,14 +68,3 @@ class RandomNumberGenerator:
 
         result["ui"] = randomUniformNumbers
         return result
-
-
-
-# rng = RandomNumberGenerator(221,23,1201,10116347,2)
-# # print(rng.resultLCG())
-# rng = RandomNumberGenerator(221,23,1201,10116347,2)
-# # print(rng.resultMultiplicative())
-
-# dataset = pd.read_csv("datacurahhujantahunan.csv")
-# x = dataset.iloc[:,:-1].values
-# print(x[1,1])
