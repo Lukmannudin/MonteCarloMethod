@@ -3,7 +3,7 @@ import pandas as pd
 class CurahHujan:
     def __init__(self):
         self.datacurahhujan = pd.read_csv("datacurahhujantahunan.csv")
-        self.dataset = self.datacurahhujan.iloc[:,:-1].values
+        self.dataset = self.datacurahhujan.iloc[:,:].values
         self.numberDecimal = 3
         self.startRandom = 0.001
         self.category = None

@@ -20,6 +20,7 @@ class App():
         self.intensitasCurahHujan = None
         self.statusHujan = None
         self.simulation = {}
+        print(CurahHujan().getDataCurahHujan())
 
     def setRandomNumberGenerator(self,a, c, m, z0, n):
         self.a = a
@@ -231,7 +232,7 @@ class App():
            
 
 app = App()
-app.setRandomNumberGenerator(221,23,1201,10116347,10)
+app.setRandomNumberGenerator(221,23,1201,10116347,35)
 app.setApp()
 app.showTableSimulation()
 app.showGraph()
